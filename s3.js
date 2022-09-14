@@ -1,4 +1,8 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  PutObjectCommand,
+  S3Client,
+  ListObjectsCommand,
+} from "@aws-sdk/client-s3";
 import {
   AWS_BUCKET_NAME,
   AWS_BUCKET_REGION,
@@ -6,6 +10,7 @@ import {
   AWS_SECRET_KEY,
 } from "./config.js";
 import fs from "fs";
+import { Console } from "console";
 
 const client = new S3Client({
   region: AWS_BUCKET_REGION,
@@ -23,5 +28,12 @@ export async function uploadFile(file) {
     Body: stream,
   };
   const command = new PutObjectCommand(uploadParams);
+  return await client.send(command);
+}
+
+export async function getFiles(files) {
+  const command = new ListObjectsCommand({
+    Bucket: AWS_BUCKET_NAME,
+  });
   return await client.send(command);
 }
