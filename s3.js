@@ -2,6 +2,7 @@ import {
   PutObjectCommand,
   S3Client,
   ListObjectsCommand,
+  GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import {
   AWS_BUCKET_NAME,
@@ -34,6 +35,14 @@ export async function uploadFile(file) {
 export async function getFiles(files) {
   const command = new ListObjectsCommand({
     Bucket: AWS_BUCKET_NAME,
+  });
+  return await client.send(command);
+}
+
+export async function getFile(fileName) {
+  const command = new GetObjectCommand({
+    Bucket: AWS_BUCKET_NAME,
+    Key: fileName,
   });
   return await client.send(command);
 }
