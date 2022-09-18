@@ -46,3 +46,12 @@ export async function getFile(fileName) {
   });
   return await client.send(command);
 }
+
+export async function downloadFile(fileName) {
+  const command = new GetObjectCommand({
+    Bucket: AWS_BUCKET_NAME,
+    Key: fileName,
+  });
+  const result = await client.send(command);
+  result.Body.pipe(fs.createWriteStream(`./images/${fileName}`));
+}
